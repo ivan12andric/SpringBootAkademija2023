@@ -1,0 +1,98 @@
+{
+	"info": {
+		"_postman_id": "4d98ca71-0d35-4a74-9314-539c1302330b",
+		"name": "SpringBootAkademija2023",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13726249"
+	},
+	"item": [
+		{
+			"name": "TestGet",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "TestGetWithParam",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "TestGetResponse",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/demoAppTest/api/test/getResponse",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"demoAppTest",
+						"api",
+						"test",
+						"getResponse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TestGetDto",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/demoAppTest/api/test/getDto",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"demoAppTest",
+						"api",
+						"test",
+						"getDto"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TestPost",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"name\" : \"Pero\",   \r\n    \"order\" : 1,\r\n    \"id\" : 55\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/demoAppTest/api/test/post",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"demoAppTest",
+						"api",
+						"test",
+						"post"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
