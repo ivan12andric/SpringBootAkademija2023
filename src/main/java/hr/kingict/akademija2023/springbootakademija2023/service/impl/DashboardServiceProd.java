@@ -10,6 +10,6 @@ public class DashboardServiceProd implements DashboardService {
 
     @Override
     public String getDashboard(){
-        return "dashboardProd.html";
+        return "dashboardProd";
     }
 }
