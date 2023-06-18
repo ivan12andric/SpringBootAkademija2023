@@ -8,8 +8,12 @@ import com.amadeus.resources.FlightOfferSearch;
 import com.amadeus.resources.Location;
 import hr.kingict.akademija2023.springbootakademija2023.dto.FlightSearchResultDto;
 import hr.kingict.akademija2023.springbootakademija2023.mapper.FlightOfferSearchFlightSearchResultDtoMapper;
+import hr.kingict.akademija2023.springbootakademija2023.mapper.FlightSearchResultDtoFlightSearchResultEntityMapper;
+import hr.kingict.akademija2023.springbootakademija2023.mapper.FlightSearchResultEntityFlightSearchResultDtoMapper;
 import hr.kingict.akademija2023.springbootakademija2023.model.FlightSearchEntity;
+import hr.kingict.akademija2023.springbootakademija2023.model.FlightSearchResultEntity;
 import hr.kingict.akademija2023.springbootakademija2023.repository.FlightSearchEntityRepository;
+import hr.kingict.akademija2023.springbootakademija2023.repository.FlightSearchResultEntityRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +39,15 @@ public class AmadeusService {
     @Autowired
     private FlightSearchEntityRepository flightSearchEntityRepository;
 
+    @Autowired
+    private FlightSearchResultEntityRepository flightSearchResultEntityRepository;
+
+    @Autowired
+    private FlightSearchResultDtoFlightSearchResultEntityMapper flightSearchResultDtoFlightSearchResultEntityMapper;
+
+    @Autowired
+    private FlightSearchResultEntityFlightSearchResultDtoMapper flightSearchResultEntityFlightSearchResultDtoMapper;
+
     public List<Location> searchAirports(String keyword) {
 
         try {
@@ -56,6 +69,18 @@ public class AmadeusService {
     public List<FlightSearchResultDto> searchFlights(String originLocationCode, String destinationLocationCode, LocalDate departureDate, LocalDate returnDate, Integer adults) {
 
         try {
+
+            FlightSearchEntity existingFlightSearch = flightSearchEntityRepository.findOneByOriginLocationCodeAndDestinationLocationCodeAndDepartureDateAndReturnDateAndAdults(originLocationCode,destinationLocationCode,departureDate,returnDate, adults);
+
+            if(existingFlightSearch != null){
+               List<FlightSearchResultEntity> flightSearchResultEntityList =  existingFlightSearch.getFlightSearchResultEntityList();
+
+               logger.info("Dohvatio podatke iz baze.");
+
+               return flightSearchResultEntityList.stream()
+                       .map(flightSearchResultEntity -> flightSearchResultEntityFlightSearchResultDtoMapper.map(flightSearchResultEntity))
+                       .toList();
+            }
 
             FlightSearchEntity flightSearchEntity = new FlightSearchEntity();
             flightSearchEntity.setOriginLocationCode(originLocationCode);
@@ -90,6 +115,17 @@ public class AmadeusService {
                             .stream()
                             .map(flightOfferSearch -> flightSearchResultDtoMapper.map(flightOfferSearch))
                             .toList();
+
+            flightSearchResultDtoList.stream()
+                    .map(flightSearchResultDto -> flightSearchResultDtoFlightSearchResultEntityMapper.map(flightSearchResultDto))
+                    .forEach(flightSearchResultEntity ->
+                    {
+                        flightSearchResultEntity.setFlightSearchEntity(flightSearchEntity);
+                        flightSearchResultEntityRepository.save(flightSearchResultEntity);
+                    });
+
+
+            logger.warn("Dohvatio podatke iz Amadeusa. To će nas koštati.");
 
             return flightSearchResultDtoList;
 
