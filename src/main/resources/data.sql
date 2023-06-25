@@ -52,3 +52,28 @@ create table rezultati_pretrage
 );
 
 alter table rezultati_pretrage add foreign key (id_pretrage) references pretrage_letova (id);
+
+create table korisnici
+(
+    id number primary key auto_increment,
+    korisnicko_ime varchar(50),
+    lozinka varchar (50),
+    rola varchar (10),
+    aktivan boolean,
+
+    datum_kreiranja date,
+    korisnik_kreiranja varchar(50),
+    datum_azuriranja date,
+    korisnik_azuriranja varchar(50)
+
+);
+
+insert into korisnici (korisnicko_ime, lozinka, rola, aktivan)
+values ('user', 'user', 'ROLE_USER', true);
+
+insert into korisnici (korisnicko_ime, lozinka, rola, aktivan)
+values ('test', 'test', 'ROLE_TEST', true);
+
+insert into korisnici (korisnicko_ime, lozinka, rola, aktivan)
+values ('admin', 'admin', 'ROLE_ADMIN', true);
+
